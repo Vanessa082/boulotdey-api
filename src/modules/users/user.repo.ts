@@ -1,23 +1,29 @@
 import { UserModel } from "../../db/models/user"
+import type { User } from "./types/types";
 
 class UserRepo {
+  private userModel: typeof UserModel;
   constructor() {
-    //
+    this.userModel = UserModel;
   }
 
-  create(user: any) {
-    return UserModel.create(user);
+  create(user: User) {
+    return this.userModel.create(user);
   };
 
   getOne(id: string) {
-    return UserModel.findById(id);
+    return this.userModel.findById(id);
+  }
+
+  getByEmail(email: string) {
+    return this.userModel.findOne({email})
   }
 
   getAll() {
-    return UserModel.find();
+    return this.userModel.find();
   }
 
-  async updateOne(_id: string, updates: any) {
+  async updateOne(_id: string, updates: Partial<User>) {
     const prev = await this.getOne(_id);
 
     return UserModel.updateOne({ _id }, { ...prev, ...updates });
