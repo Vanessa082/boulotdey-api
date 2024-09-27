@@ -1,37 +1,40 @@
 import { Schema, model } from "mongoose";
 import type { Document } from "mongoose";
 
-const userSchema = new Schema({
-  firstName: {
-    type: String,
-    require: true
+const userSchema = new Schema(
+  {
+    firstName: {
+      type: String,
+      require: true,
+    },
+    lastName: {
+      type: String,
+      require: true,
+      default: "",
+    },
+    email: {
+      type: String,
+      require: true,
+      unique: true,
+    },
+    phoneNumber: {
+      type: String,
+      default: "",
+    },
+    role: {
+      type: String,
+      enum: ["ADMIN", "EMPLOYEE", "EMPLOYER"],
+      default: "EMPLOYEE",
+    },
+    password: {
+      type: String,
+      require: true,
+    },
   },
-  lastName: {
-    type: String,
-    require: true,
-    default: "",
-  },
-  email: {
-    type: String,
-    require: true,
-    unique: true,
-  },
-  phoneNumber: {
-    type: String,
-    default: "",
-  },
-  role: {
-    type: String,
-    enum: ["ADMIN", "EMPLOYEE", "EMPLOYER"],
-    default: "EMPLOYEE",
-  },
-  password: {
-    type: String,
-    require: true,
-  },
-}, {
-  timestamps: true,
-});
+  {
+    timestamps: true,
+  }
+);
 
 // type _User = typeof userSchema.pathType;
 
@@ -41,7 +44,7 @@ export const UserModel = model("user", userSchema);
 
 // }
 
-(async () => {
+async () => {
   const user = await UserModel.create({
     lastName: "Edmund",
     firstName: "Rash",
@@ -54,4 +57,4 @@ export const UserModel = model("user", userSchema);
   // const _ = data?.toJSON();
 
   // _.
-});
+};

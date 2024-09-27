@@ -1,4 +1,4 @@
-import { UserModel } from "../../db/models/user"
+import { UserModel } from "../../db/models/user";
 import type { User } from "./types/types";
 
 class UserRepo {
@@ -9,14 +9,18 @@ class UserRepo {
 
   create(user: User) {
     return this.userModel.create(user);
-  };
+  }
 
   getOne(id: string) {
     return this.userModel.findById(id);
   }
 
   getByEmail(email: string) {
-    return this.userModel.findOne({email})
+    return this.userModel.findOne({ email });
+  }
+
+  getByEmailAndPhoneNumber(email: string, phoneNumber: string) {
+    return this.userModel.findOne({ email, phoneNumber });
   }
 
   getAll() {

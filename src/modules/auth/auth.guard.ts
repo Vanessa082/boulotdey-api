@@ -1,7 +1,5 @@
 class AuthGuard {
-  constructor () {
-    // 
+  constructor() {
+    //
   }
-
-  
 }

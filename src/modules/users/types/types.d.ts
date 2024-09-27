@@ -1,6 +1,6 @@
 import { UserModel } from "../../../db/models/user";
 
-type UserRoles = "ADMIN" | "EMPLOYEE" | "EMPLOYER"
+type UserRoles = "ADMIN" | "EMPLOYEE" | "EMPLOYER";
 
 interface User {
   _id?: string;
@@ -9,13 +9,9 @@ interface User {
   email: string;
   phoneNumber?: string;
   role: UserRoles;
-  password: String;
+  password: string;
   createAt?: Date | string;
   updatedAt?: Date | string;
 }
 
-export type {
-  User,
-  UserRoles
-}
-
+export type { User, UserRoles };

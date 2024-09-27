@@ -5,8 +5,13 @@ const router = Router();
 
 const authController = new AuthController();
 
-router.post("/create-account", authController.createAccount.bind(authController));
+router.post(
+  "/create-account",
+  authController.createAccount.bind(authController)
+);
 
-router.post("/login", authController.login.bind(authController));
+router.post("/login/email", authController.loginWithEmail.bind(authController));
+
+router.post("/login/phone", authController.loginWithPhoneNumber.bind(authController));
 
 export default router;

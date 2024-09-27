@@ -14,23 +14,22 @@ app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 
-app.get("/health",(_,res) => {
-  const date = new Date;
+app.get("/health", (_, res) => {
+  const date = new Date();
   res.status(200).json({
     message: "🚀 server up and running 🚀",
-    time: `${date.toDateString} | ${date.toLocaleDateString}` 
-  })
-})
+    time: `${date.toDateString} | ${date.toLocaleDateString}`,
+  });
+});
 
 app.get("*", (_, res) => {
   res.status(404).json({ message: "Route not found" });
 });
 
-connectToDB()
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(
-        `[Server]: running at ${NODE_ENV === "dev" ? "http://localhost:" : ""}${PORT}\n`
-      );
-    });
+connectToDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(
+      `[Server]: running at ${NODE_ENV === "dev" ? "http://localhost:" : ""}${PORT}\n`
+    );
   });
+});

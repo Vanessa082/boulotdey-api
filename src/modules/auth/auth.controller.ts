@@ -12,17 +12,20 @@ class AuthController {
     this.authService = new AuthService();
   };
 
-  async login(req: Request, res: Response<APIResponse<string>>) {
-
+  async loginWithEmail(req: Request, res: Response<APIResponse<string>>) {
     try {
       const { email, password } = req.body as User;
       const existingUser = await this.userRepo.getByEmail(email);
 
       if (!existingUser) {
-        throw new Error("Invalid Email or Password")
+        throw new Error("Invalid Email or Password");
       }
 
-      const match =  await password
+      const isMatch = this.authService.compare(password, existingUser.password!);
+
+      if (!isMatch) {
+        throw new Error("Invalid Email or Password")
+      }
 
       const token = this.authService.jwtSign({
         _id: existingUser._id.toString(),
@@ -36,15 +39,34 @@ class AuthController {
         status: 200,
       });
     } catch (error) {
-      //
+      console.error()
     }
   };
 
+  async loginWithPhoneNumber(req: Request, res: Response<APIResponse<string>>) {
+    return res.status(200).json({
+      message: "still working on this",
+      status: 200,
+      data: "",
+    });
+  }
+
   async createAccount(
     req: Request,
-    res: Response<APIResponse<{ token: string; user: User; }>>
+    res: Response<APIResponse<string | null>>
   ) {
     const { firstName, lastName, email, phoneNumber, role, password } = req.body as User;
+    const existingUser = await this.userRepo.getByEmailAndPhoneNumber(email, phoneNumber!);
+
+    if (existingUser) {
+      return res.status(401).json({
+        message: "User already exists, please login",
+        status: 401,
+        data: null
+      });
+    }
+
+    const hash = await this.authService.hash(password);
 
     const newUser = await this.userRepo.create({
       firstName,
@@ -52,7 +74,7 @@ class AuthController {
       email,
       phoneNumber,
       role,
-      password
+      password: hash
     });
 
     const token = this.authService.jwtSign({
@@ -64,10 +86,7 @@ class AuthController {
     return res.json({
       message: "ok",
       status: 200,
-      data: {
-        token,
-        user: newUser as unknown as User,
-      }
+      data: token,
     });
   };
 }
