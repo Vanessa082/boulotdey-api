@@ -7,30 +7,30 @@ class UserRepo {
     this.userModel = UserModel;
   }
 
-  create(user: User) {
-    return this.userModel.create(user);
+  create(user: Partial<User>) {
+    return this.userModel.create<User>(user as User);
   }
 
   getOne(id: string) {
-    return this.userModel.findById(id);
+    return this.userModel.findById<User>(id);
   }
 
   getByEmail(email: string) {
-    return this.userModel.findOne({ email });
+    return this.userModel.findOne<User>({ email });
   }
 
   getByEmailAndPhoneNumber(email: string, phoneNumber: string) {
-    return this.userModel.findOne({ email, phoneNumber });
+    return this.userModel.findOne<User>({ email, phoneNumber });
   }
 
   getAll() {
-    return this.userModel.find();
+    return this.userModel.find<User>();
   }
 
   async updateOne(_id: string, updates: Partial<User>) {
     const prev = await this.getOne(_id);
 
-    return UserModel.updateOne({ _id }, { ...prev, ...updates });
+    return UserModel.updateOne<User>({ _id }, { ...prev, ...updates });
   }
 }
 

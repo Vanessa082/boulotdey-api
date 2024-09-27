@@ -5,6 +5,9 @@ import cors from "cors";
 import { NODE_ENV, PORT } from "./config";
 import { authRouter, userRouter } from "./routes";
 import { connectToDB } from "./db/connection";
+import { AuthGuard } from "./modules/auth/auth.guard";
+
+const authGuard = new AuthGuard();
 
 const app: Express = express();
 
@@ -12,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/auth", authRouter);
-app.use("/users", userRouter);
+app.use("/users", authGuard.currentUser.bind(authGuard), userRouter);
 
 app.get("/health", (_, res) => {
   const date = new Date();
