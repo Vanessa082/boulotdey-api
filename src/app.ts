@@ -6,6 +6,7 @@ import { NODE_ENV, PORT } from "./config";
 import { authRouter, userRouter } from "./routes";
 import { connectToDB } from "./db/connection";
 import { AuthGuard } from "./modules/auth/auth.guard";
+import { UserModel } from "./db/models/user";
 
 const authGuard = new AuthGuard();
 
@@ -21,7 +22,7 @@ app.get("/health", (_, res) => {
   const date = new Date();
   res.status(200).json({
     message: "🚀 server up and running 🚀",
-    time: `${date.toDateString} | ${date.toLocaleDateString}`,
+    time: `${date.toDateString()} | ${date.toLocaleTimeString()}`,
   });
 });
 
@@ -31,6 +32,11 @@ app.get("*", (_, res) => {
 
 connectToDB().then(() => {
   app.listen(PORT, () => {
+    
+    // UserModel.deleteMany({ role: "EMPLOYEE" })
+    //   .then(console.log)
+    //   .then(() => console.log("all users deleted"));
+
     console.log(
       `[Server]: running at ${NODE_ENV === "dev" ? "http://localhost:" : ""}${PORT}\n`
     );

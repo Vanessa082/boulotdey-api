@@ -3,14 +3,17 @@ import { APIResponse } from "../../interfaces/app";
 import { AuthService } from "./auth.service";
 import { UserRepo } from "../users/user.repo";
 import { User } from "../users/types/types";
+import { AppUtilities } from "../../utils/app.utilities";
 
 class AuthGuard {
   private authService: AuthService;
   private userRepo: UserRepo;
+  private appUtilities: AppUtilities;
 
   constructor() {
     this.authService = new AuthService();
     this.userRepo = new UserRepo();
+    this.appUtilities = new AppUtilities();
   }
 
   async currentUser(req: Request, res: Response<APIResponse<string>>, next: NextFunction) {
@@ -21,17 +24,12 @@ class AuthGuard {
       if (userPayload) {
         const dbUser = await this.userRepo.getByEmail(userPayload.email);
 
-        (req as unknown as { user: User }).user = dbUser!;
-
-        console.log((req as unknown as { user: User })?.user);
+        (req as unknown as { user: any }).user = this.appUtilities.removeObjKeys(dbUser!, ["password"]);
       }
     };
-    console.log(token);
 
     next();
   }
-
-  // const verifyToken = 
 }
 
 export { AuthGuard };

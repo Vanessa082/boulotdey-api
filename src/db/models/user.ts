@@ -1,5 +1,4 @@
-import { Schema, model } from "mongoose";
-import type { Document } from "mongoose";
+import { Schema, model, SchemaOptions } from "mongoose";
 
 const userSchema = new Schema(
   {
@@ -32,29 +31,8 @@ const userSchema = new Schema(
     },
   },
   {
-    timestamps: true,
-  }
+    timestamps: true
+  },
 );
 
-// type _User = typeof userSchema.pathType;
-
 export const UserModel = model("user", userSchema);
-
-// const a: Schema<typeof UserModel> = {
-
-// }
-
-async () => {
-  const user = await UserModel.create({
-    lastName: "Edmund",
-    firstName: "Rash",
-    email: "rash@gmail.com",
-  });
-  // const data = await UserModel.findOne({
-  //   email: "rash@gmail.com",
-  // });
-
-  // const _ = data?.toJSON();
-
-  // _.
-};

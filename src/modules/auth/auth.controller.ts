@@ -42,7 +42,7 @@ class AuthController {
       _id: newUser._id.toString(),
       email: newUser.email!,
       phoneNumber: newUser.phoneNumber
-    });
+    } as any);
 
     return res.json({
       message: "ok",
