@@ -10,6 +10,7 @@ interface User {
   phoneNumber?: string;
   role: UserRoles;
   password: string;
+  confirmPassword: string;
   createAt?: Date | string;
   updatedAt?: Date | string;
 }

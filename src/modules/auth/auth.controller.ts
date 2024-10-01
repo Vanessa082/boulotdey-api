@@ -16,7 +16,7 @@ class AuthController {
     req: Request,
     res: Response<APIResponse<string | null>>
   ) {
-    const { firstName, lastName, email, phoneNumber, role, password } = req.body as User;
+    const { firstName, lastName, email, phoneNumber, role, password, confirmPassword } = req.body as User;
     const existingUser = await this.userRepo.getByEmailAndPhoneNumber(email, phoneNumber!);
 
     if (existingUser) {
@@ -27,6 +27,14 @@ class AuthController {
       });
     }
 
+    if(password !== confirmPassword) {
+      return res.status(401).json({
+        message: "Passwords do not match",
+        status: 401,
+        data: null
+      })
+    }
+
     const hash = await this.authService.hash(password);
 
     const newUser = await this.userRepo.create({
@@ -35,7 +43,8 @@ class AuthController {
       email,
       phoneNumber,
       role,
-      password: hash
+      password: hash,
+      confirmPassword
     });
 
     const token = this.authService.jwtSign({
@@ -44,7 +53,7 @@ class AuthController {
       phoneNumber: newUser.phoneNumber
     } as any);
 
-    return res.json({
+    return res.status(200).json({
       message: "ok",
       status: 200,
       data: token,
@@ -96,7 +105,7 @@ class AuthController {
   getCurrentUser(req: Request, res: Response<APIResponse<User | null>>) {
     /**
      * req.user because authGuard.currentUser middleware injects the user
-     * to the request object
+     * to the request object 
     */
     const user = (req as unknown as { user?: User }).user;
 
@@ -112,6 +121,16 @@ class AuthController {
       data: user,
     });
   }
+
+  // async requestPasswordReset(req: Request, res: Response<APIResponse<string>>) {
+  //   const { email } = req.body as User;
+  //   const user = await this.userRepo.getByEmail(email);
+  //   if (!user) return res.status(404).json({
+  //     message: "User not FOund",
+  //     status: 404,
+  //     data: ""
+  //   })
+  // } 
 }
 
 export { AuthController };
