@@ -12,7 +12,7 @@ const authGuard = new AuthGuard();
 const app: Express = express();
 
 app.use(cors({
-  origin: "http://localhost:5173https://boulotdey.vercel.app"
+  origin: process.env.FRONT_END_URL
 }));
 app.use(express.json());
 

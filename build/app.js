@@ -12,7 +12,7 @@ const auth_guard_1 = require("./modules/auth/auth.guard");
 const authGuard = new auth_guard_1.AuthGuard();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
-    origin: "http://localhost:5173"
+    origin: process.env.FRONT_END_URL
 }));
 app.use(express_1.default.json());
 app.use("/auth", routes_1.authRouter);
