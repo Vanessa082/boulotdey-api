@@ -16,7 +16,7 @@ class AuthController {
     req: Request,
     res: Response<APIResponse<string | null>>
   ) {
-    const { firstName, lastName, email, phoneNumber, role, password, confirmPassword } = req.body as User;
+    const { firstName, lastName, email, phoneNumber, roles, password, confirmPassword } = req.body as User;
     const existingUser = await this.userRepo.getByEmailAndPhoneNumber(email, phoneNumber!);
 
     if (existingUser) {
@@ -42,7 +42,7 @@ class AuthController {
       lastName,
       email,
       phoneNumber,
-      role,
+      roles,
       password: hash,
       confirmPassword
     });
@@ -64,8 +64,8 @@ class AuthController {
     try {
       const { email, password } = req.body as User;
       const existingUser = await this.userRepo.getByEmail(email);
-
       if (!existingUser) {
+        console.log("yoyo");
         throw new Error("Invalid Email or Password");
       }
 

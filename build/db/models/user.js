@@ -21,10 +21,10 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         default: "",
     },
-    role: {
-        type: String,
+    roles: {
+        type: [String],
         enum: ["ADMIN", "EMPLOYEE", "EMPLOYER"],
-        default: "EMPLOYEE",
+        default: ["EMPLOYEE"]
     },
     password: {
         type: String,

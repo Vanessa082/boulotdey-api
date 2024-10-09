@@ -6,6 +6,7 @@ import { APP_CONFIG, } from "./config";
 import { authRouter, userRouter } from "./routes";
 import { connectToDB } from "./db/connection";
 import { AuthGuard } from "./modules/auth/auth.guard";
+import { UserModel } from "./db/models/user";
 
 const authGuard = new AuthGuard();
 
@@ -33,8 +34,8 @@ app.get("*", (_, res) => {
 
 connectToDB().finally(() => {
   app.listen(APP_CONFIG.port, () => {
-    
-    // UserModel.deleteMany({ role: "EMPLOYEE" })
+
+    // UserModel.deleteMany({ role: "EMPLOYERS" })
     //   .then(console.log)
     //   .then(() => console.log("all users deleted"));
 

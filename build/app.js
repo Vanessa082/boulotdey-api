@@ -29,7 +29,7 @@ app.get("*", (_, res) => {
 });
 (0, connection_1.connectToDB)().finally(() => {
     app.listen(config_1.APP_CONFIG.port, () => {
-        // UserModel.deleteMany({ role: "EMPLOYEE" })
+        // UserModel.deleteMany({ roles: "EMPLOYEE" })
         //   .then(console.log)
         //   .then(() => console.log("all users deleted"));
         console.log(`[Server]: running at ${config_1.APP_CONFIG.node_env === "dev" ? "http://localhost:" : ""}${config_1.APP_CONFIG.port}\n`);

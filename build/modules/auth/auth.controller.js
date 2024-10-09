@@ -12,7 +12,7 @@ class AuthController {
     }
     ;
     async createAccount(req, res) {
-        const { firstName, lastName, email, phoneNumber, role, password, confirmPassword } = req.body;
+        const { firstName, lastName, email, phoneNumber, roles, password, confirmPassword } = req.body;
         const existingUser = await this.userRepo.getByEmailAndPhoneNumber(email, phoneNumber);
         if (existingUser) {
             return res.status(401).json({
@@ -34,7 +34,7 @@ class AuthController {
             lastName,
             email,
             phoneNumber,
-            role,
+            roles,
             password: hash,
             confirmPassword
         });

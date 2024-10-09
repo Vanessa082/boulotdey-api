@@ -8,7 +8,7 @@ interface User {
   lastName: string;
   email: string;
   phoneNumber?: string;
-  role: UserRoles;
+  roles: UserRoles[];
   password: string;
   confirmPassword: string;
   createAt?: Date | string;
