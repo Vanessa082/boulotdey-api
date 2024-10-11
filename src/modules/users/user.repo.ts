@@ -1,3 +1,4 @@
+// import { UserModel } from "../../db/models/user";
 import { UserModel } from "../../db/models/user";
 import type { User } from "./types/types";
 
@@ -8,7 +9,9 @@ class UserRepo {
   }
 
   create(user: Partial<User>) {
-    return this.userModel.create<User>(user as User).then(res => res.toJSON());
+    return this.userModel
+      .create<User>(user as User)
+      .then((res) => res.toJSON());
   }
 
   getOne(id: string) {
@@ -30,7 +33,7 @@ class UserRepo {
   async updateOne(_id: string, updates: Partial<User>) {
     const prev = await this.getOne(_id);
 
-    return UserModel.updateOne<User>({ _id }, { ...prev, ...updates }).lean();
+    return this.userModel.updateOne<User>({ _id }, { ...prev, ...updates }).lean() as unknown as User;
   }
 }
 

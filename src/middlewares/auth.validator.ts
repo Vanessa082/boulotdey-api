@@ -1,15 +1,44 @@
-// import Joi from "joi";
+import { NextFunction, Request, Response } from "express";
+import Joi from "joi";
 
-// const registerSchema = Joi.object({
-//   firstName: Joi.string().min(3).max(30)
-// })
+const createAccountSchema = Joi.object({
+  // firstName: Joi.string().min(3).max(30).required(),
+  // lastName: Joi.string().min(3).max(30).required(),
+  email: Joi.string().email().required(),
+  roles: Joi.array()
+    .items(Joi.string().valid("ADMIN", "EMPLOYEE", "EMPLOYER"))
+    .default(["EMPLOYEE"]),
+  password: Joi.string().min(8).required(),
+  confirmPassword: Joi.string()
+    .valid(Joi.ref("password"))
+    .required()
+    .messages({ "any.only": "Confirm Password must match Password" }),
+  phoneNumber: Joi.string()
+    .pattern(/^6\d{8}$/)
+    .message("Phone number must start with '6' followed by exactly 8 digits"),
+});
 
-// class AuthValidator{
-//   constructor() {
+const loginSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(8).required(),
+});
 
-//   };
+class AuthValidator {
+  validateCreateAccount(req: Request, res: Response, next: NextFunction) {
+    const { error, value } = createAccountSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+    next();
+  }
 
-// validateCreateAccount (req, res, next ){
+  validateLoginWithEmail(req: Request, res: Response, next: NextFunction) {
+    const { error } = loginSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+    next();
+  }
+}
 
-// }
-// }
+export default AuthValidator;

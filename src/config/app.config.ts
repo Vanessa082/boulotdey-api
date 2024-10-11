@@ -5,7 +5,7 @@ config();
 export const APP_CONFIG = {
   port: process.env.PORT!,
   node_env: (process.env.NODE_ENV as "prod" | "dev") || "prod",
-  front_end_url: process.env.FRONT_END_URL!
+  front_end_url: process.env.FRONT_END_URL!,
 };
 
 export const JWT_CONFIG = {

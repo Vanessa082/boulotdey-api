@@ -1,8 +1,6 @@
 import jwt from "jsonwebtoken";
 import * as bcrypt from "bcrypt";
 import { JWT_CONFIG, SALT_ROUNDS } from "../../config";
-import { UserRepo } from "../users/user.repo";
-import { number, string } from "joi";
 interface JWTPayload {
   _id: string;
   email: string;
@@ -33,7 +31,7 @@ class AuthService {
 
       return bcrypt.hash(password, salt);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
