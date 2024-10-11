@@ -2,8 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
 
 const createAccountSchema = Joi.object({
-  // firstName: Joi.string().min(3).max(30).required(),
-  // lastName: Joi.string().min(3).max(30).required(),
   email: Joi.string().email().required(),
   roles: Joi.array()
     .items(Joi.string().valid("ADMIN", "EMPLOYEE", "EMPLOYER"))
