@@ -10,7 +10,7 @@ class AppUtilities {
       if (keysToRemove.includes(key) || key == "password") continue;
 
       results[key] = obj[key];
-    };
+    }
 
     return results;
   }

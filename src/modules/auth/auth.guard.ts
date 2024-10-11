@@ -16,7 +16,11 @@ class AuthGuard {
     this.appUtilities = new AppUtilities();
   }
 
-  async currentUser(req: Request, res: Response<APIResponse<string>>, next: NextFunction) {
+  async currentUser(
+    req: Request,
+    res: Response<APIResponse<string>>,
+    next: NextFunction
+  ) {
     const token = req.headers?.authorization?.split(" ").pop() as string;
     if (token) {
       const userPayload = this.authService.jwtVerify(token);
@@ -24,9 +28,10 @@ class AuthGuard {
       if (userPayload) {
         const dbUser = await this.userRepo.getByEmail(userPayload.email);
 
-        (req as unknown as { user: any }).user = this.appUtilities.removeObjKeys(dbUser!, ["password"]);
+        (req as unknown as { user: any }).user =
+          this.appUtilities.removeObjKeys(dbUser!, ["password"]);
       }
-    };
+    }
 
     next();
   }

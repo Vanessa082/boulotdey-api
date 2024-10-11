@@ -10,12 +10,12 @@ const createAccountSchema = Joi.object({
     .default(["EMPLOYEE"]),
   password: Joi.string().min(8).required(),
   confirmPassword: Joi.string()
-    .valid(Joi.ref('password'))
+    .valid(Joi.ref("password"))
     .required()
     .messages({ "any.only": "Confirm Password must match Password" }),
   phoneNumber: Joi.string()
     .pattern(/^6\d{8}$/)
-    .message("Phone number must start with '6' followed by exactly 8 digits")
+    .message("Phone number must start with '6' followed by exactly 8 digits"),
 });
 
 const loginSchema = Joi.object({
@@ -39,6 +39,6 @@ class AuthValidator {
     }
     next();
   }
-};
+}
 
 export default AuthValidator;

@@ -2,7 +2,7 @@ import type { Express } from "express";
 import express from "express";
 import cors from "cors";
 
-import { APP_CONFIG, } from "./config";
+import { APP_CONFIG } from "./config";
 import { authRouter, userRouter } from "./routes";
 import { connectToDB } from "./db/connection";
 import { AuthGuard } from "./modules/auth/auth.guard";
@@ -12,9 +12,11 @@ const authGuard = new AuthGuard();
 
 const app: Express = express();
 
-app.use(cors({
-  origin: process.env.FRONT_END_URL
-}));
+app.use(
+  cors({
+    origin: process.env.FRONT_END_URL,
+  })
+);
 app.use(express.json());
 
 app.use("/auth", authRouter);
@@ -34,7 +36,6 @@ app.get("*", (_, res) => {
 
 connectToDB().finally(() => {
   app.listen(APP_CONFIG.port, () => {
-
     // UserModel.deleteMany({ role: "EMPLOYERS" })
     //   .then(console.log)
     //   .then(() => console.log("all users deleted"));

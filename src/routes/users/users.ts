@@ -9,4 +9,6 @@ router.get("/", userController.getAll.bind(userController));
 
 router.get("/:id", userController.getOne.bind(userController));
 
+router.patch("/:id", userController.updateUser.bind(userController));
+
 export default router;

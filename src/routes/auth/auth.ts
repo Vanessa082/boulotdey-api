@@ -5,7 +5,6 @@ import AuthValidator from "../../middlewares/auth.validator";
 
 const router = Router();
 
-
 const authValidator = new AuthValidator();
 const authController = new AuthController();
 const authGuard = new AuthGuard();
@@ -16,13 +15,21 @@ router.post(
   authController.createAccount.bind(authController)
 );
 
-router.post("/login/email", authValidator.validateLoginWithEmail.bind(authValidator), authController.loginWithEmail.bind(authController));
+router.post(
+  "/login/email",
+  authValidator.validateLoginWithEmail.bind(authValidator),
+  authController.loginWithEmail.bind(authController)
+);
 
-router.post("/login/phone", authController.loginWithPhoneNumber.bind(authController));
+router.post(
+  "/login/phone",
+  authController.loginWithPhoneNumber.bind(authController)
+);
 
-router.get("/current-user",
+router.get(
+  "/current-user",
   authGuard.currentUser.bind(authGuard),
-  authController.getCurrentUser.bind(authController),
+  authController.getCurrentUser.bind(authController)
 );
 
 export default router;

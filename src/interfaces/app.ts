@@ -1,6 +1,6 @@
 interface APIResponse<T = null> {
   message: string;
-  data: T;
+  data: T | null;
   status: number;
 }
 

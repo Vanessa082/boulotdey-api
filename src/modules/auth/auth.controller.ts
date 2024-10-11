@@ -10,47 +10,50 @@ class AuthController {
   constructor() {
     this.userRepo = new UserRepo();
     this.authService = new AuthService();
-  };
+  }
 
-  async createAccount(
-    req: Request,
-    res: Response<APIResponse<string | null>>
-  ) {
-    const { firstName, lastName, email, phoneNumber, roles, password, confirmPassword } = req.body as User;
-    const existingUser = await this.userRepo.getByEmailAndPhoneNumber(email, phoneNumber!);
+  async createAccount(req: Request, res: Response<APIResponse<string | null>>) {
+    const { email, phoneNumber, roles, password, confirmPassword } =
+      req.body as User;
+
+    console.log(req.body);
+
+    const existingUser = await this.userRepo.getByEmailAndPhoneNumber(
+      email,
+      phoneNumber!
+    );
 
     if (existingUser) {
-      return res.status(401).json({
+      console.log("Email already exists:", email);
+      return res.status(409).json({
         message: "User already exists, please login",
-        status: 401,
-        data: null
+        status: 409,
+        data: null,
       });
     }
 
-    if(password !== confirmPassword) {
-      return res.status(401).json({
+    if (password !== confirmPassword) {
+      return res.status(400).json({
         message: "Passwords do not match",
-        status: 401,
-        data: null
-      })
+        status: 400,
+        data: null,
+      });
     }
 
     const hash = await this.authService.hash(password);
 
     const newUser = await this.userRepo.create({
-      firstName,
-      lastName,
       email,
       phoneNumber,
       roles,
       password: hash,
-      confirmPassword
+      confirmPassword,
     });
 
     const token = this.authService.jwtSign({
       _id: newUser._id.toString(),
       email: newUser.email!,
-      phoneNumber: newUser.phoneNumber
+      phoneNumber: newUser.phoneNumber,
     } as any);
 
     return res.status(200).json({
@@ -58,7 +61,7 @@ class AuthController {
       status: 200,
       data: token,
     });
-  };
+  }
 
   async loginWithEmail(req: Request, res: Response<APIResponse<string>>) {
     try {
@@ -69,7 +72,10 @@ class AuthController {
         throw new Error("Invalid Email or Password");
       }
 
-      const isMatch = this.authService.compare(password, existingUser.password!);
+      const isMatch = this.authService.compare(
+        password,
+        existingUser.password!
+      );
 
       if (!isMatch) {
         throw new Error("Invalid Email or Password");
@@ -78,8 +84,8 @@ class AuthController {
       const token = this.authService.jwtSign({
         _id: existingUser._id.toString(),
         email: existingUser.email!,
-        phoneNumber: existingUser.phoneNumber
-      })
+        phoneNumber: existingUser.phoneNumber,
+      });
 
       res.status(200).json({
         message: "all good",
@@ -87,13 +93,13 @@ class AuthController {
         status: 200,
       });
     } catch (error) {
-      console.error()
+      console.error();
     }
-  };
+  }
 
   /**
    * Will implement otp for phone numbers
-  */
+   */
   async loginWithPhoneNumber(req: Request, res: Response<APIResponse<string>>) {
     return res.status(200).json({
       message: "still working on this",
@@ -105,15 +111,16 @@ class AuthController {
   getCurrentUser(req: Request, res: Response<APIResponse<User | null>>) {
     /**
      * req.user because authGuard.currentUser middleware injects the user
-     * to the request object 
-    */
+     * to the request object
+     */
     const user = (req as unknown as { user?: User }).user;
 
-    if (!user) return res.status(404).json({
-      message: "could not find current user",
-      status: 404,
-      data: null,
-    });
+    if (!user)
+      return res.status(404).json({
+        message: "could not find current user",
+        status: 404,
+        data: null,
+      });
 
     return res.status(200).json({
       message: "current user retrieved",
@@ -130,7 +137,7 @@ class AuthController {
   //     status: 404,
   //     data: ""
   //   })
-  // } 
+  // }
 }
 
 export { AuthController };
