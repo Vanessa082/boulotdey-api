@@ -3,11 +3,6 @@ import { APIResponse } from "../../interfaces/app";
 import { UserRepo } from "./user.repo";
 import { User, UserRoles } from "./types/types";
 import mongoose from "mongoose";
-
-// interface User {
-//   name: string;
-// }
-
 class UserController {
   private userRepo: UserRepo;
 

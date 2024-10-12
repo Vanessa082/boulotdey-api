@@ -11,6 +11,7 @@ const createAccountSchema = Joi.object({
     .valid(Joi.ref("password"))
     .required()
     .messages({ "any.only": "Confirm Password must match Password" }),
+  verificationStatus: Joi.string().valid("UNVERIFIED", "PENDING", "VERIFIED", "REJECTED").default("UNVERIFIED"),
   phoneNumber: Joi.string()
     .pattern(/^6\d{8}$/)
     .message("Phone number must start with '6' followed by exactly 8 digits"),

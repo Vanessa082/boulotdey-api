@@ -2,7 +2,6 @@ import { UserModel } from "../../../db/models/user";
 
 type UserRoles = "ADMIN" | "EMPLOYEE" | "EMPLOYER";
 type UserVerificationStatus = "UNVERIFIED" | "PENDING" | "VERIFIED" | "REJECTED";
-
 interface User {
   _id: string;
   firstName: string;
