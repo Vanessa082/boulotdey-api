@@ -2,8 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
 
 const createAccountSchema = Joi.object({
-  // firstName: Joi.string().min(3).max(30).required(),
-  // lastName: Joi.string().min(3).max(30).required(),
   email: Joi.string().email().required(),
   roles: Joi.array()
     .items(Joi.string().valid("ADMIN", "EMPLOYEE", "EMPLOYER"))
@@ -13,6 +11,7 @@ const createAccountSchema = Joi.object({
     .valid(Joi.ref("password"))
     .required()
     .messages({ "any.only": "Confirm Password must match Password" }),
+  verificationStatus: Joi.string().valid("UNVERIFIED", "PENDING", "VERIFIED", "REJECTED").default("UNVERIFIED"),
   phoneNumber: Joi.string()
     .pattern(/^6\d{8}$/)
     .message("Phone number must start with '6' followed by exactly 8 digits"),
