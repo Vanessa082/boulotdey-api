@@ -25,7 +25,10 @@ const userSchema = new Schema(
       enum: ["ADMIN", "EMPLOYEE", "EMPLOYER"],
       default: ["EMPLOYEE"],
     },
-
+    employerType: {
+      type: String,
+      enum: ["PERSONAL", "BUSINESS", "COMPANY"],
+    },
     password: {
       type: String,
       require: true,
@@ -47,38 +50,6 @@ const userSchema = new Schema(
   {
     timestamps: true,
   }
-);
-
-const profileSchema = new Schema(
-  {
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
-    skills: {
-      default: [String],
-    },
-    language: {
-      default: [String],
-    },
-    experience: [
-      {
-        company: String,
-        role: String,
-        startDate: Date,
-        endDate: Date,
-      },
-    ],
-    resume: {
-      type: String,
-      default: "",
-    },
-    cover: {
-      type: String,
-      default: "",
-    },
-  },
-  {}
 );
 
 export const UserModel = model("user", userSchema);
