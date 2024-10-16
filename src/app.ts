@@ -6,7 +6,6 @@ import { APP_CONFIG } from "./config";
 import { authRouter, userRouter } from "./routes";
 import { connectToDB } from "./db/connection";
 import { AuthGuard } from "./modules/auth/auth.guard";
-import { UserModel } from "./db/models/user";
 
 const authGuard = new AuthGuard();
 
