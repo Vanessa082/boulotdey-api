@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { APIResponse } from "../../interfaces/app";
 import { UserRepo } from "./user.repo";
-import { User, UserRoles } from "./types/types";
+import { User, UserRoles, UserVerificationStatus } from "./types/types";
 import mongoose from "mongoose";
 class UserController {
   private userRepo: UserRepo;
@@ -57,6 +57,14 @@ class UserController {
         return res.status(401).json({
           message: "Invalid user",
           status: 401,
+          data: null,
+        });
+      }
+
+      if (user.verificationStatus === "VERIFIED") {
+        return res.status(400).json({
+          message: "User is already verified",
+          status: 400,
           data: null,
         });
       }
